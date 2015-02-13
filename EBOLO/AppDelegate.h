@@ -7,9 +7,17 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+#import "LBPFaceDetector.h"
+#import "MCT.h"
 @interface AppDelegate : NSObject <NSApplicationDelegate>
-
+{
+    int frameNum;
+    NSMutableDictionary *rectDictionary;
+    NSMutableArray *orderedKeys;
+    int totalDetections;
+    LBPFaceDetector *f;
+    MCT *mct;
+}
 
 @end
 
