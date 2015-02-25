@@ -240,6 +240,8 @@ int keyboard;
 	//	pMOG2->set("nmixtures", 3);
 	//	pMOG2->set("", <#int value#>)
 	
+    
+    int conflict;
 	cv::VideoCapture cap;
 	cap.open("/Users/joel/Desktop/Crowd_Short.mp4");
 	cv::Mat frame,grayframe,prevFrame,mog;
