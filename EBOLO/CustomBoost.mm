@@ -91,6 +91,7 @@
 
 -(float)gkn:(int)r K:(int)k
 {
+	//Extra comment
 	float sum = 0;
 	int x = k%imageWidth;
 	int y = k/imageWidth;
