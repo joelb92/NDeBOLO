@@ -120,7 +120,7 @@ using namespace cv;
     cv::Mat color = imgIn;
     cv::cvtColor(color, imgIn, CV_BGR2GRAY);
     cv::Size imgSize = imgIn.size();
-    Mat imgTemp = Mat::zeros(imgSize, CV_8U);
+    Mat imgTemp = Mat::zeros(imgSize, CV_16SC1);
     
     unsigned int census = 0;
     unsigned int bit = 0;
@@ -175,10 +175,15 @@ using namespace cv;
             int br = redAvg < u;
             int bg = greenAvg < u;
             int bb = blueAvg < u;
-            census = census+br+bg+bb;
+			census <<= 1;
+            census = census+br;
+			census <<= 1;
+			census = census+bg;
+			census <<= 1;
+			census = census+bb;
             //cout<<endl;
             
-            imgTemp.ptr<uchar>(x)[y] = census;
+            imgTemp.ptr<short int>(x)[y] = census;
         }
     }
     return imgTemp;

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D6D50D41A91683C005DCBE0 /* CustomBoost.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5D6D50D31A91683C005DCBE0 /* CustomBoost.mm */; };
+		5D6D5C731A970B46005DCBE0 /* CustomBoostClassifier.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5D6D5C721A970B46005DCBE0 /* CustomBoostClassifier.mm */; };
+		5D6D5C761A9D9A7E005DCBE0 /* bgfg_vibe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D6D5C741A9D9A7E005DCBE0 /* bgfg_vibe.cpp */; };
+		5D6D5C791A9DA483005DCBE0 /* MCTBoost.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5D6D5C781A9DA483005DCBE0 /* MCTBoost.mm */; };
 		5DF08B451A81A2360034B840 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5DF08B441A81A2360034B840 /* AppDelegate.mm */; };
 		5DF08B471A81A2360034B840 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF08B461A81A2360034B840 /* main.m */; };
 		5DF08B491A81A2360034B840 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DF08B481A81A2360034B840 /* Images.xcassets */; };
@@ -46,6 +50,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5D6D50D21A91683C005DCBE0 /* CustomBoost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomBoost.h; sourceTree = "<group>"; };
+		5D6D50D31A91683C005DCBE0 /* CustomBoost.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomBoost.mm; sourceTree = "<group>"; };
+		5D6D5C711A970B46005DCBE0 /* CustomBoostClassifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomBoostClassifier.h; sourceTree = "<group>"; };
+		5D6D5C721A970B46005DCBE0 /* CustomBoostClassifier.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomBoostClassifier.mm; sourceTree = "<group>"; };
+		5D6D5C741A9D9A7E005DCBE0 /* bgfg_vibe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bgfg_vibe.cpp; sourceTree = "<group>"; };
+		5D6D5C751A9D9A7E005DCBE0 /* bgfg_vibe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bgfg_vibe.h; sourceTree = "<group>"; };
+		5D6D5C771A9DA483005DCBE0 /* MCTBoost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCTBoost.h; sourceTree = "<group>"; };
+		5D6D5C781A9DA483005DCBE0 /* MCTBoost.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCTBoost.mm; sourceTree = "<group>"; };
 		5DF08B3E1A81A2360034B840 /* EBOLO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EBOLO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DF08B421A81A2360034B840 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5DF08B431A81A2360034B840 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -121,6 +133,8 @@
 		5DF08B351A81A2350034B840 = {
 			isa = PBXGroup;
 			children = (
+				5D6D5C741A9D9A7E005DCBE0 /* bgfg_vibe.cpp */,
+				5D6D5C751A9D9A7E005DCBE0 /* bgfg_vibe.h */,
 				5DF08B8F1A81B2B40034B840 /* HOGPersonDetector.h */,
 				5DF08B901A81B2B40034B840 /* HOGPersonDetector.mm */,
 				5DF08B401A81A2360034B840 /* EBOLO */,
@@ -143,8 +157,14 @@
 			children = (
 				5DF08B431A81A2360034B840 /* AppDelegate.h */,
 				5DF08B441A81A2360034B840 /* AppDelegate.mm */,
+				5D6D5C771A9DA483005DCBE0 /* MCTBoost.h */,
+				5D6D5C781A9DA483005DCBE0 /* MCTBoost.mm */,
 				5DF08B801A81A69A0034B840 /* CSVParser.h */,
 				5DF08B811A81A69A0034B840 /* CSVParser.mm */,
+				5D6D50D21A91683C005DCBE0 /* CustomBoost.h */,
+				5D6D50D31A91683C005DCBE0 /* CustomBoost.mm */,
+				5D6D5C711A970B46005DCBE0 /* CustomBoostClassifier.h */,
+				5D6D5C721A970B46005DCBE0 /* CustomBoostClassifier.mm */,
 				5DF08B921A8B0BCE0034B840 /* MCT.h */,
 				5DF08B931A8B0BCE0034B840 /* MCT.mm */,
 				5DF08B8C1A81AA920034B840 /* LBPFaceDetector.h */,
@@ -310,10 +330,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				5DF08B861A81A69A0034B840 /* CSVParser.mm in Sources */,
+				5D6D5C761A9D9A7E005DCBE0 /* bgfg_vibe.cpp in Sources */,
+				5D6D5C731A970B46005DCBE0 /* CustomBoostClassifier.mm in Sources */,
 				5DF08B8E1A81AA920034B840 /* LBPFaceDetector.mm in Sources */,
+				5D6D50D41A91683C005DCBE0 /* CustomBoost.mm in Sources */,
 				5DF08B471A81A2360034B840 /* main.m in Sources */,
 				5DF08B451A81A2360034B840 /* AppDelegate.mm in Sources */,
 				5DF08B941A8B0BCE0034B840 /* MCT.mm in Sources */,
+				5D6D5C791A9DA483005DCBE0 /* MCTBoost.mm in Sources */,
 				5DF08B881A81A69A0034B840 /* ParticleClusterer.mm in Sources */,
 				5DF08B911A81B2B40034B840 /* HOGPersonDetector.mm in Sources */,
 				5DF08B871A81A69A0034B840 /* SilhouettePartitioner.mm in Sources */,
@@ -521,6 +545,7 @@
 				5DF08B5D1A81A2360034B840 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5DF08B5E1A81A2360034B840 /* Build configuration list for PBXNativeTarget "EBOLOTests" */ = {
 			isa = XCConfigurationList;
@@ -529,6 +554,7 @@
 				5DF08B601A81A2360034B840 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

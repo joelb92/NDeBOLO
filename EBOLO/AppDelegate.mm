@@ -47,22 +47,63 @@ int keyboard;
     mct = [[MCT alloc] init];
 //    [f detect];
 //    [self faceCascadeClassifier];
-    [self basicDetection];
+	[self BS];  
+//	[self basicDetection];
+	MCTBoost *booster = [[MCTBoost alloc] init];
+//	[booster run];
+//	[booster buildTrainingSetYaleFaces:@"/Users/joel/Documents/TrainingFaces"];
+//    [self basicDetection];
 }
+
+-(void)videoSave
+{
+	VideoCapture* capture2 = new VideoCapture("/Users/joel/Desktop/Crowd_Short.mp4" );
+	cv::Size size2 = cv::Size(352,240);
+	int codec = CV_FOURCC('M', 'J', 'P', 'G');
+	// Unlike in C, here we use an object of the class VideoWriter//
+	VideoWriter writer2("video_.avi",codec,15.0,size2,true);
+	writer2.open("video_.avi",codec,15.0,size2,true);
+	if(writer2.isOpened())
+	{
+		int a = 100;
+		Mat frame2;
+		while ( a > 0 ) {
+			capture2->read(frame2);
+			imshow("live",frame2);
+			waitKey(10);
+			writer2.write(frame2);
+			a--;
+		}
+	}
+	else
+	{
+		cout<<"ERROR while opening"<<endl;
+	}
+	//No Need to release the Writer as the distructor will called automatically
+	capture2->release();
+	return;
+}
+
 -(void)basicDetection
 {
+	MCTBoost *booster = [[MCTBoost alloc] init];
     //load in video
     cv::VideoCapture cap;
-    cap.open("/Users/joel/Documents/triskett_bridge/tsktt_bridge_morning.h264.mp4");
+    cap.open("/Users/joel/Desktop/Crowd_Short.mp4");
     cv::Mat frame,grayframe,prevFrame;
     int frameNum = 0;
     while (true) {
         cap >> frame;
         for(int i = 0; i < 10; i++) cap.grab();
         cv::imshow("frame", frame);
-        cv::Mat censusImage = [mct ModifiedColorCensusTransform:frame];
-        cv::imshow("census", censusImage);
-        cv::waitKey(10);
+		std::vector<cv::Rect> faceRects = [booster slidingWindowDetection:frame];
+		for(int i = 0; i < faceRects.size(); i++)
+		{
+			cv::Rect r = faceRects[i];
+			cv::circle(frame, cv::Point(r.x+r.width/2,r.y+r.height/2), r.width/2, cv::Scalar(255,0,0));
+		}
+		cv::imshow("frame with faces", frame);
+        cv::waitKey(100);
         prevFrame = grayframe;
         frameNum++;
     }
@@ -193,7 +234,94 @@ int keyboard;
 //    return faces;
 //}
 
+-(void)BS
+{
+	//load in video
+	//	pMOG2->set("nmixtures", 3);
+	//	pMOG2->set("", <#int value#>)
+	
+	cv::VideoCapture cap;
+	cap.open("/Users/joel/Desktop/Crowd_Short.mp4");
+	cv::Mat frame,grayframe,prevFrame,mog;
+	int frameNum = 0;
+	bgfg_vibe bgfg;
+	cap >> frame;
+	bgfg.init_model(frame);
+	
+	while (true) {
+		for (int i = 0; i < 10; i++) cap.grab();
+		prevFrame = frame;
+		cap >> frame;
+		cv::cvtColor(frame, frame, CV_BGR2GRAY);
+		//		cv::GaussianBlur(frame, frame, cv::Size(3,3), 4);
+		if (!prevFrame.empty()) {
+			cv::Mat sub = cv::Mat::zeros(frame.rows, frame.cols, CV_32FC1);
+			cv::Mat subc = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC1);
+			int maxVal = 0;
+			
+			for(int x = 0; x < frame.cols; x++)
+			{
+				for (int y = 0; y < frame.rows; y++) {
+					int cur = frame.at<uchar>(y,x);
+					int last = prevFrame.at<uchar>(y,x);
+					int newVal = abs(cur-last);
+					if (newVal > maxVal) {
+						maxVal = newVal;
+					}
+					sub.at<float>(y,x) = newVal;
+				}
+			}
+			for(int x = 0; x < frame.cols; x++)
+			{
+				for (int y = 0; y < frame.rows; y++)
+				{
+					int newVal =sub.at<float>(y,x)/maxVal*255;
+					if (newVal > 50) {
+						subc.at<uchar>(y,x) = newVal;
+					}
+					
+				}
+			}
+			cv::Mat subMask,subMaskNoHoles,subMaskNoHolesConvex;
+			subMaskNoHoles = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC1);
+			subMaskNoHolesConvex = cv::Mat::zeros(frame.rows, frame.cols, CV_8UC1);
+			cv::threshold(subc, subMask, 60, 255, CV_THRESH_BINARY);
+			cv::dilate(subMask, subMask, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size( )));
+			cv::erode(subMask, subMask, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(15,15)));
+			std::vector<std::vector<cv::Point> > conts,newConts;
+			
+			std::vector<Vec4i> hierarchy;
 
+			cv::findContours(subMask.clone(), conts,hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_NONE);
+			cv::drawContours(subMaskNoHoles, conts, -1, cv::Scalar(255,255,255),-1,8,hierarchy,1);
+			cv::findContours(subMaskNoHoles.clone(), conts,hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_NONE);
+			for (int i = 0; i < conts.size(); i++)
+			{
+				if (conts[i].size() > 0 && cv::contourArea(conts[i]) > 20) {
+					std::vector<cv::Point>cont;
+					
+					newConts.push_back(cont);
+				}
+			}
+			cv::drawContours(subMaskNoHolesConvex, newConts, -1, cv::Scalar(255,255,255),-1,8);
+			cv::Mat masked,foreground;
+			cv::bitwise_and(frame, subMaskNoHolesConvex, masked);
+			cv::imshow("sub", subc);
+			cv::imshow("subMask", subMask);
+			cv::imshow("subFilled", subMaskNoHoles);
+			cv::imshow("subMaskFilledConvex",subMaskNoHolesConvex);
+			cv::imshow("Masked", masked);
+			
+			
+			foreground = *bgfg.fg(frame);
+			cv::imshow("vibe", foreground);
+		}
+		cv::imshow("frame", frame);
+		cv::waitKey();
+		prevFrame = grayframe;
+		frameNum++;
+	}
+}
 
 
 
